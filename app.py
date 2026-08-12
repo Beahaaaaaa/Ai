@@ -6,12 +6,17 @@ app = Flask(__name__)
 API_KEY = os.environ.get("GEMINI_API_KEY")
 API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
 
+@app.route("/", methods=["GET"])
+def home():
+    return "OK", 200
+
 @app.route("/kakao-bot", methods=["POST"])
 def kakao_bot():
     try:
         body = request.get_json()
         msg = body.get("userRequest", {}).get("utterance", "").strip()
-        if not API_KEY: ans = "API Key 오류"
+        if not API_KEY:
+            ans = "API Key 오류"
         elif msg:
             Complete_URL = f"{API_URL}?key={API_KEY}"
             payload = {
@@ -20,9 +25,12 @@ def kakao_bot():
             }
             res = requests.post(Complete_URL, json=payload, headers={"Content-Type": "application/json"}, timeout=10)
             ans = res.json()["candidates"][0]["content"]["parts"][0]["text"] if res.status_code == 200 else f"오류: {res.status_code}"
-        else: ans = "메시지 없음"
-    except: ans = "서버 오류"
+        else:
+            ans = "메시지 없음"
+    except Exception:
+        ans = "서버 오류"
     return jsonify({"version": "2.0", "template": {"outputs": [{"simpleText": {"text": ans}}]}})
 
 if __name__ == "__main__":
-    app.run(port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
