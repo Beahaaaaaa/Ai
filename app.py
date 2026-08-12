@@ -13,7 +13,9 @@ def kakao_bot():
         body = request.get_json()
         user_message = body.get("userRequest", {}).get("utterance", "")
 
-        if user_message:
+        if not API_KEY:
+            ai_answer = "서버 설정 오류: GEMINI_API_KEY 환경 변수가 설정되지 않았습니다. Render 대시보드의 Environment Variables에서 키를 등록해 주세요."
+        elif user_message:
             prompt = user_message.strip()
             
             payload = {
@@ -36,7 +38,7 @@ def kakao_bot():
                 try:
                     ai_answer = result["candidates"][0]["content"]["parts"][0]["text"]
                 except (KeyError, IndexError):
-                    ai_answer = "AI 응답을 처리하는 중 오류가 발생했습니다."
+                    ai_answer = "AI 응답을 처리하는 중 구조 오류가 발생했습니다."
             else:
                 ai_answer = f"API 호출 실패 (상태 코드: {response.status_code}, 내용: {response.text})"
         else:
