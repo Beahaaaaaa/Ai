@@ -20,15 +20,23 @@ def kakao_bot():
             prompt = user_message.strip()
             
             payload = {
+                "system_instruction": {
+                    "parts": {
+                        "text": "너는 카카오톡 챗봇이다. 친절하고 자연스럽게 대답해라."
+                    }
+                },
                 "contents": [{
+                    "role": "user",
                     "parts": [{"text": prompt}]
                 }]
             }
             
             headers = {"Content-Type": "application/json"}
             
+            complete_url = f"{API_URL}?key={API_KEY}"
+            
             response = requests.post(
-                f"{API_URL}?key={API_KEY}",
+                complete_url,
                 json=payload,
                 headers=headers,
                 timeout=10
