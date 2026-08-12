@@ -38,7 +38,7 @@ def kakao_bot():
                 except (KeyError, IndexError):
                     ai_answer = "AI 응답을 처리하는 중 오류가 발생했습니다."
             else:
-                ai_answer = f"API 호출 실패 (상태 코드: {response.status_code})"
+                ai_answer = f"API 호출 실패 (상태 코드: {response.status_code}, 내용: {response.text})"
         else:
             ai_answer = "메시지가 비어있습니다."
 
