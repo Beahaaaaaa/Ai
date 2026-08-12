@@ -5,7 +5,8 @@ import requests
 app = Flask(__name__)
 
 API_KEY = os.environ.get("GEMINI_API_KEY")
-API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
+# 모델 이름을 최신 환경에 맞게 수정했습니다.
+API_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent"
 
 @app.route("/kakao-bot", methods=["POST"])
 def kakao_bot():
@@ -14,7 +15,7 @@ def kakao_bot():
         user_message = body.get("userRequest", {}).get("utterance", "")
 
         if not API_KEY:
-            ai_answer = "서버 설정 오류: GEMINI_API_KEY 환경 변수가 설정되지 않았습니다. Render 대시보드의 Environment Variables에서 키를 등록해 주세요."
+            ai_answer = "서버 설정 오류: GEMINI_API_KEY가 등록되지 않았습니다."
         elif user_message:
             prompt = user_message.strip()
             
