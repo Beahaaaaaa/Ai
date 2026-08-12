@@ -4,7 +4,7 @@ import requests
 
 app = Flask(__name__)
 
-API_KEY = os.environ.get("AIzaSyDui0j44HLQBhUiY7O1resMlNKpp3wdetY")
+API_KEY = os.environ.get("GEMINI_API_KEY")
 API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
 
 @app.route("/kakao-bot", methods=["POST"])
